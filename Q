@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JavaScript Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .quiz-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #f5f5f5;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .question {
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .options label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .result {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    .result span {
+      font-size: 24px;
+      color: #007bff;
+    }
+
+    .next-btn {
+      display: none;
+    }
+
+    .submit-btn,
+    .next-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .submit-btn:hover,
+    .next-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>JavaScript Quiz</h1>
+    <form id="quiz-form">
+      <div class="question">1. What does JS stand for?</div>
+      <div class="options">
+        <label>
+          <input type="radio" name="q1" value="a"> a) JavaScript
+        </label>
+        <label>
+          <input type="radio" name="q1" value="b"> b) JavaSource
+        </label>
+        <label>
+          <input type="radio" name="q1" value="c"> c) JustScript
+        </label>
+      </div>
+
+      <!-- Repeat the following code for the remaining questions -->
+      <div class="question">2. What is the correct syntax to include an external JavaScript file?</div>
+      <div class="options">
+        <label>
+          <input type="radio" name="q2" value="a"> a) &lt;script src="script.js"&gt;&lt;/script&gt;
+        </label>
+        <label>
+          <input type="radio" name="q2" value="b"> b) &lt;script href="script.js"&gt;&lt;/script&gt;
+        </label>
+        <label>
+          <input type="radio" name="q2" value="c"> c) &lt;script name="script.js"&gt;&lt;/script&gt;
+        </label>
+      </div>
+
+      <!-- Repeat the above code for the remaining questions -->
+
+      <div class="question">10. What is the output of the following code?<br><br>
+        <code>console.log(1 + "1" - 1);</code>
+      </div>
+      <div class="options">
+        <label>
+          <input type="radio" name="q10" value="a"> a) 10
+        </label>
+        <label>
+          <input type="radio" name="q10" value="b"> b) 11
+        </label>
+        <label>
+          <input type="radio" name="q10" value="c"> c) 01
+        </label>
+      </div>
+
+      <button class="submit-btn" type="submit">Submit</button>
+      <button class="next-btn" type="button">Next</button>
+    </form>
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    const questions = document.querySelectorAll('.question');
+    const options = document.querySelectorAll('.options');
+    const submitBtn = document.querySelector('.submit-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    const resultContainer = document.getElementById('result');
+    let currentQuestion = 0;
+    let score = 0;
+
+    showQuestion(currentQuestion);
+
+    document.getElementById('quiz-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      calculateScore();
+    });
+
+    nextBtn.addEventListener('click', function() {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion(currentQuestion);
+      } else {
+        calculateScore();
+      }
+    });
+
+    function showQuestion(questionIndex) {
+      for (let i = 0; i < questions.length; i++) {
+        questions[i].style.display = 'none';
+      }
+      questions[questionIndex].style.display = 'block';
+
+      if (questionIndex === questions.length - 1) {
+        nextBtn.style.display = 'none';
+        submitBtn.style.display = 'inline-block';
+      } else {
+        nextBtn.style.display = 'inline-block';
+        submitBtn.style.display = 'none';
+      }
+    }
+
+    function calculateScore() {
+      const answers = ['a', 'a', 'b', 'c', 'b', 'c', 'a', 'b', 'a', 'c'];
+      const form = document.getElementById('quiz-form');
+      const formData = new FormData(form);
+
+      const currentAnswer = formData.get('q' + (currentQuestion + 1));
+
+      if (currentAnswer === answers[currentQuestion]) {
+        score++;
+      }
+
+      if (currentQuestion === questions.length - 1) {
+        displayScore();
+      } else {
+        nextBtn.click();
+      }
+    }
+
+    function displayScore() {
+      resultContainer.innerHTML = 'Your score: <span>' + score + '/' + questions.length + '</span>';
+      resultContainer.style.display = 'block';
+      submitBtn.style.display = 'none';
+      nextBtn.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
